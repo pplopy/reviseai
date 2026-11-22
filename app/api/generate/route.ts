@@ -1,21 +1,34 @@
 import { NextResponse } from "next/server";
 import { generateContent } from "@/lib/gemini";
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request
+) {
   try {
-    const { course } = await req.json();
+    const {
+      course,
+      level,
+    } = await req.json();
 
-    const result = await generateContent(course);
+    const result =
+      await generateContent(
+        course,
+        level
+      );
 
     return NextResponse.json({
       result,
     });
   } catch (error) {
-    console.error("ERREUR GEMINI :", error);
+    console.error(error);
 
     return NextResponse.json(
-      { error: String(error) },
-      { status: 500 }
+      {
+        error: "Erreur Gemini",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }

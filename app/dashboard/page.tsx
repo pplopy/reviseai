@@ -3,24 +3,74 @@
 import { useState } from "react";
 
 export default function Dashboard() {
-  const [course, setCourse] = useState("");
-  const [tab, setTab] = useState("resume");
-  const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+const [course, setCourse] =
+  useState("");
 
-  async function generate() {
-    try {
-      setLoading(true);
+const [tab, setTab] =
+  useState("resume");
 
-      const res = await fetch("/api/generate", {
+const [result, setResult] =
+  useState<any>(null);
+
+const [loading, setLoading] =
+  useState(false);
+
+const [level, setLevel] =
+  useState("Application");
+
+async function generate() {
+  try {
+    setLoading(true);
+
+    const res = await fetch(
+      "/api/generate",
+      {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
         },
         body: JSON.stringify({
           course,
+          level,
         }),
-      });
+      }
+    );
+
+    const data =
+      await res.json();
+
+    if (!res.ok) {
+      alert(
+        data.error ||
+          "Erreur serveur"
+      );
+      return;
+    }
+
+    const cleaned =
+      data.result
+        .replace(
+          /```json/g,
+          ""
+        )
+        .replace(/```/g, "")
+        .trim();
+
+    const parsed =
+      JSON.parse(cleaned);
+
+    setResult(parsed);
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Erreur lors de la génération"
+    );
+  } finally {
+    setLoading(false);
+  }
+}
 
       const data = await res.json();
 
@@ -56,7 +106,45 @@ export default function Dashboard() {
       <h1 className="text-4xl font-bold text-blue-600 mb-6">
         RéviseAI
       </h1>
+<div className="mb-6">
 
+  <label className="block mb-2 font-semibold">
+    Niveau
+  </label>
+
+  <select
+    value={level}
+    onChange={(e) =>
+      setLevel(
+        e.target.value
+      )
+    }
+    className="border rounded-xl px-4 py-2"
+  >
+
+    <option>
+      Compréhension
+    </option>
+
+    <option>
+      Application
+    </option>
+
+    <option>
+      Approfondissement
+    </option>
+
+    <option>
+      Olympiades
+    </option>
+
+    <option>
+      Recherche
+    </option>
+
+  </select>
+
+</div>
       <textarea
         value={course}
         onChange={(e) =>
