@@ -138,10 +138,6 @@ async function generate() {
       Olympiades
     </option>
 
-    <option>
-      Recherche
-    </option>
-
   </select>
 
 </div>

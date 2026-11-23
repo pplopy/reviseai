@@ -13,9 +13,9 @@ export async function generateContent(
   });
 
   const prompt = `
-Tu es RéviseAI.
+Tu es RéviseAI, un professeur expert du lycée français.
 
-Cours :
+Analyse le cours suivant :
 
 ${course}
 
@@ -23,69 +23,89 @@ Niveau demandé :
 
 ${level}
 
-Règles :
+Guide de difficulté :
 
 Compréhension :
 - définitions
-- concepts fondamentaux
+- vocabulaire
+- notions essentielles
 - questions simples
 
 Application :
 - exercices classiques
-- méthodes standard
+- calculs directs
+- méthodes du cours
 
 Approfondissement :
-- réflexion
-- raisonnements
+- raisonnement
+- mise en relation des notions
+- problèmes plus compliqués
 - démonstrations simples
 
 Olympiades :
 - problèmes difficiles
-- créativité
-- démonstrations poussées
+- créativité mathématique
+- stratégies de résolution
+- démonstrations avancées
 
-Recherche :
-- généralisations
-- conjectures
-- variantes
+Retourne UNIQUEMENT un JSON valide.
 
-Retourne UNIQUEMENT ce JSON :
+Format EXACT :
 
 {
-  "resume":"texte",
+  "resume": "texte",
 
-  "quiz":[
+  "quiz": [
     {
-      "question":"texte",
-      "options":[
-        "A",
-        "B",
-        "C",
-        "D"
+      "question": "texte",
+      "options": [
+        "option A",
+        "option B",
+        "option C",
+        "option D"
       ],
-      "reponse_correcte":"texte",
-      "explication":"texte"
+      "reponse_correcte": "texte",
+      "explication": "texte"
     }
   ],
 
-  "flashcards":[
+  "flashcards": [
     {
-      "recto":"texte",
-      "verso":"texte"
+      "recto": "texte",
+      "verso": "texte"
     }
   ],
 
-  "exercices":[
+  "exercices": [
     {
-      "titre":"texte",
-      "enonce":"texte",
-      "niveau":"${level}"
+      "titre": "texte",
+      "enonce": "texte",
+      "niveau": "Facile"
+    },
+    {
+      "titre": "texte",
+      "enonce": "texte",
+      "niveau": "Moyen"
+    },
+    {
+      "titre": "texte",
+      "enonce": "texte",
+      "niveau": "Difficile"
     }
   ]
 }
 
-Aucun markdown.
-Aucune explication hors JSON.
+Règles obligatoires :
+
+- Respecter le programme du lycée français.
+- Produire exactement 4 quiz.
+- Produire exactement 5 flashcards.
+- Produire exactement 3 exercices.
+- Les exercices doivent être adaptés au niveau demandé.
+- Aucun markdown.
+- Aucun texte en dehors du JSON.
+- Aucun bloc \`\`\`json.
+- Uniquement du JSON valide.
 `;
 
   const result = await model.generateContent(
